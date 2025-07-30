@@ -1,20 +1,21 @@
 # Demo Video Script (Max 2 Minutes)
 
 ## Opening (15 seconds)
-"Hello! This is my Currency Exchange Dashboard - a real-time application that fetches live exchange rates and allows currency conversion."
+"Hello! This is my Currency Exchange Dashboard - a real-time application that fetches live exchange rates and allows currency conversion using external APIs."
 
 ## Local Demo (45 seconds)
 1. **Show the application running locally**
    - Open browser to `http://localhost:8080`
+   - Say: "Here's the application running locally in a Docker container"
    - Demonstrate key features:
-     - Live exchange rates display
-     - Currency search functionality
-     - Currency conversion (e.g., 100 USD to EUR)
-     - Conversion history
+     - **Live exchange rates**: "You can see real-time exchange rates from CurrencyAPI"
+     - **Search functionality**: Type in search box - "Users can search for specific currencies"
+     - **Currency conversion**: Enter 100 USD to EUR - "Convert between any currencies with live rates"
+     - **Conversion history**: "The app tracks conversion history locally"
 
 2. **Highlight technical aspects:**
-   - "Uses CurrencyAPI for real-time data"
-   - "Built with vanilla JavaScript, containerized with Docker"
+   - "This uses CurrencyAPI for real-time data and FlagsAPI for country flags"
+   - "Built with vanilla JavaScript, containerized with Docker and Nginx"
 
 ## Deployment Demo (45 seconds)
 1. **Show Docker Hub image**

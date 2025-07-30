@@ -33,12 +33,12 @@ A real-time currency exchange dashboard that provides live exchange rates, curre
 
 2. **Build the Docker image:**
    ```bash
-   docker build -t <your-dockerhub-username>/currency-exchange:v1 .
+   docker build -t sethira/currency-exchange:v1 .
    ```
 
 3. **Run the container:**
    ```bash
-   docker run -p 8080:8080 <your-dockerhub-username>/currency-exchange:v1
+   docker run -p 8080:8080 sethira/currency-exchange:v1
    ```
 
 4. **Test locally:**
@@ -56,9 +56,9 @@ A real-time currency exchange dashboard that provides live exchange rates, curre
 
 2. **Push to Docker Hub:**
    ```bash
-   docker push <your-dockerhub-username>/currency-exchange:v1
-   docker tag <your-dockerhub-username>/currency-exchange:v1 <your-dockerhub-username>/currency-exchange:latest
-   docker push <your-dockerhub-username>/currency-exchange:latest
+   docker push sethira/currency-exchange:v1
+   docker tag sethira/currency-exchange:v1 sethira/currency-exchange:latest
+   docker push sethira/currency-exchange:latest
    ```
 
 ## Lab Server Deployment
@@ -72,12 +72,12 @@ ssh user@web-01
 
 **Pull and run the image:**
 ```bash
-docker pull <your-dockerhub-username>/currency-exchange:v1
+docker pull sethira/currency-exchange:v1
 docker stop app 2>/dev/null || true
 docker rm app 2>/dev/null || true
 docker run -d --name app --restart unless-stopped \
   -p 8080:8080 \
-  <your-dockerhub-username>/currency-exchange:v1
+  sethira/currency-exchange:v1
 ```
 
 **Repeat the same steps for web-02:**
