@@ -1,0 +1,24 @@
+{
+  "name": "currency-exchange-dashboard",
+  "version": "1.0.0",
+  "description": "A real-time currency exchange dashboard using CurrencyAPI",
+  "main": "index.html",
+  "scripts": {
+    "build": "docker build -t currency-exchange:v1 .",
+    "start": "docker run -p 8080:8080 currency-exchange:v1",
+    "test": "echo \"Open http://localhost:8080 in your browser to test\""
+  },
+  "keywords": [
+    "currency",
+    "exchange",
+    "api",
+    "docker",
+    "nginx"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/currency-exchange-dashboard.git"
+  }
+}

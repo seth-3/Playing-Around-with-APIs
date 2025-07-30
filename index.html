@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Currency Exchange Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      margin: 0;
+      background: linear-gradient(to right, #232526, #414345);
+      color: #fff;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: #1e2a38;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+    }
+
+    h1 {
+      text-align: center;
+      color: #00ffc6;
+    }
+
+    .converter {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+      justify-content: center;
+    }
+
+    select, input {
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      font-size: 1rem;
+    }
+
+    button {
+      background-color: #00ffc6;
+      color: #000;
+      padding: 10px 20px;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #00e6b8;
+    }
+
+    .search-box {
+      margin: 20px 0;
+      text-align: center;
+    }
+
+    .search-box input {
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 1rem;
+      width: 70%;
+    }
+
+    .rate-list {
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .rate {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #2c3e50;
+      padding: 12px 20px;
+      margin-bottom: 8px;
+      border-radius: 8px;
+    }
+
+    .rate img {
+      width: 24px;
+      margin-right: 10px;
+    }
+
+    .history {
+      margin-top: 30px;
+    }
+
+    .history h3 {
+      margin-bottom: 10px;
+      color: #ffde59;
+    }
+
+    .history-item {
+      background-color: #34495e;
+      padding: 10px;
+      margin-bottom: 5px;
+      border-radius: 6px;
+    }
+
+    .error {
+      text-align: center;
+      color: #ff4d4d;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>💱 Currency Exchange Dashboard</h1>
+
+    <div class="converter">
+      <input type="number" id="amount" placeholder="Amount" />
+      <select id="fromCurrency"></select>
+      <select id="toCurrency"></select>
+      <button onclick="convertCurrency()">Convert</button>
+    </div>
+
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="🔍 Search currency..." oninput="filterRates()" />
+    </div>
+
+    <div id="rates" class="rate-list">Loading rates...</div>
+
+    <div class="history">
+      <h3>🕒 Conversion History</h3>
+      <div id="historyList"></div>
+    </div>
+  </div>
+
+  <script>
+    // API key should be injected during deployment
+    const API_KEY = window.CURRENCY_API_KEY || "cur_live_Fl2nnUXXkqH5CDqQSiXC8Ttj2BhsgPHIj8AzsOFf";
+    const baseURL = `https://api.currencyapi.com/v3/latest?apikey=${API_KEY}&base_currency=USD`;
+    let currencyData = {};
+
+    function getFlag(countryCode) {
+      return `<img src="https://flagsapi.com/${countryCode}/flat/32.png" onerror="this.src=''" />`;
+    }
+
+    function countryCodeFromCurrency(currency) {
+      const mapping = {
+        USD: "US", EUR: "EU", GBP: "GB", JPY: "JP", RWF: "RW", NGN: "NG",
+        KES: "KE", ZAR: "ZA", CAD: "CA", INR: "IN", CNY: "CN", AED: "AE",
+        AUD: "AU", CHF: "CH"
+      };
+      return mapping[currency] || "UN";
+    }
+
+    function populateCurrencySelects(currencies) {
+      const fromSelect = document.getElementById("fromCurrency");
+      const toSelect = document.getElementById("toCurrency");
+      fromSelect.innerHTML = "";
+      toSelect.innerHTML = "";
+
+      for (let code in currencies) {
+        let option = `<option value="${code}">${code}</option>`;
+        fromSelect.innerHTML += option;
+        toSelect.innerHTML += option;
+      }
+
+      fromSelect.value = "USD";
+      toSelect.value = "RWF";
+    }
+
+    function showRates(data) {
+      let ratesHTML = "";
+      for (let code in data) {
+        const rate = data[code];
+        const countryCode = countryCodeFromCurrency(code);
+        ratesHTML += `
+          <div class="rate" data-currency="${code}">
+            <div>${getFlag(countryCode)} ${code}</div>
+            <div>${rate.value.toFixed(2)}</div>
+          </div>`;
+      }
+      document.getElementById("rates").innerHTML = ratesHTML;
+    }
+
+    function filterRates() {
+      const input = document.getElementById("searchInput").value.toLowerCase();
+      const rates = document.querySelectorAll(".rate");
+      rates.forEach(rate => {
+        const currency = rate.getAttribute("data-currency").toLowerCase();
+        rate.style.display = currency.includes(input) ? "flex" : "none";
+      });
+    }
+
+    function convertCurrency() {
+      const amount = parseFloat(document.getElementById("amount").value);
+      const from = document.getElementById("fromCurrency").value;
+      const to = document.getElementById("toCurrency").value;
+
+      if (!amount || amount <= 0) return alert("Enter a valid amount!");
+
+      const rateFrom = currencyData[from]?.value;
+      const rateTo = currencyData[to]?.value;
+
+      if (!rateFrom || !rateTo) return alert("Invalid currency selection!");
+
+      const result = (amount / rateFrom) * rateTo;
+      alert(`${amount} ${from} = ${result.toFixed(2)} ${to}`);
+
+      saveHistory(`${amount} ${from} → ${result.toFixed(2)} ${to}`);
+    }
+
+    function saveHistory(entry) {
+      let history = JSON.parse(localStorage.getItem("conversionHistory") || "[]");
+      history.unshift(entry);
+      if (history.length > 5) history.pop();
+      localStorage.setItem("conversionHistory", JSON.stringify(history));
+      showHistory();
+    }
+
+    function showHistory() {
+      let history = JSON.parse(localStorage.getItem("conversionHistory") || "[]");
+      const list = history.map(item => `<div class="history-item">${item}</div>`).join("");
+      document.getElementById("historyList").innerHTML = list || "No recent conversions.";
+    }
+
+    async function loadRates() {
+      try {
+        const res = await fetch(baseURL);
+        const json = await res.json();
+        currencyData = json.data;
+        populateCurrencySelects(currencyData);
+        showRates(currencyData);
+        showHistory();
+      } catch (err) {
+        console.error(err);
+        document.getElementById("rates").innerHTML = "<p class='error'>Error fetching rates.</p>";
+      }
+    }
+
+    loadRates();
+  </script>
+</body>
+</html>
