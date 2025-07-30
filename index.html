@@ -146,11 +146,38 @@
 
     function countryCodeFromCurrency(currency) {
       const mapping = {
-        USD: "US", EUR: "EU", GBP: "GB", JPY: "JP", RWF: "RW", NGN: "NG",
-        KES: "KE", ZAR: "ZA", CAD: "CA", INR: "IN", CNY: "CN", AED: "AE",
-        AUD: "AU", CHF: "CH"
+        // Major currencies
+        USD: "US", EUR: "EU", GBP: "GB", JPY: "JP", CAD: "CA", AUD: "AU", CHF: "CH", CNY: "CN",
+        
+        // European currencies
+        SEK: "SE", NOK: "NO", DKK: "DK", PLN: "PL", CZK: "CZ", HUF: "HU", RON: "RO",
+        BGN: "BG", HRK: "HR", ISK: "IS", RUB: "RU", UAH: "UA", TRY: "TR",
+        
+        // Asian currencies
+        INR: "IN", KRW: "KR", SGD: "SG", HKD: "HK", TWD: "TW", THB: "TH", MYR: "MY",
+        IDR: "ID", PHP: "PH", VND: "VN", PKR: "PK", BDT: "BD", LKR: "LK", NPR: "NP",
+        
+        // Middle East & Africa
+        AED: "AE", SAR: "SA", QAR: "QA", KWD: "KW", BHD: "BH", OMR: "OM", JOD: "JO",
+        ILS: "IL", EGP: "EG", ZAR: "ZA", NGN: "NG", KES: "KE", UGX: "UG", TZS: "TZ",
+        RWF: "RW", ETB: "ET", GHS: "GH", XOF: "SN", XAF: "CM", MAD: "MA", TND: "TN",
+        
+        // Americas
+        MXN: "MX", BRL: "BR", ARS: "AR", CLP: "CL", COP: "CO", PEN: "PE", UYU: "UY",
+        BOB: "BO", PYG: "PY", VES: "VE", CRC: "CR", GTQ: "GT", HNL: "HN", NIO: "NI",
+        PAB: "PA", DOP: "DO", JMD: "JM", TTD: "TT", BBD: "BB",
+        
+        // Oceania
+        NZD: "NZ", FJD: "FJ", TOP: "TO", WST: "WS", VUV: "VU", SBD: "SB",
+        
+        // Others
+        IRR: "IR", IQD: "IQ", AFN: "AF", MMK: "MM", KHR: "KH", LAK: "LA", MNT: "MN",
+        KZT: "KZ", UZS: "UZ", KGS: "KG", TJS: "TJ", TMT: "TM", AZN: "AZ", GEL: "GE",
+        AMD: "AM", BYN: "BY", MDL: "MD", ALL: "AL", MKD: "MK", RSD: "RS", BAM: "BA"
       };
-      return mapping[currency] || "UN";
+      
+      // Return mapped country code or a generic flag emoji for unknown currencies
+      return mapping[currency] || "🏳️";
     }
 
     function populateCurrencySelects(currencies) {
