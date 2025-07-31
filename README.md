@@ -374,7 +374,7 @@ telnet web-02 8080
 
 ## Demo Video
 
-📹 **Watch the demo**: [Currency Exchange Dashboard Demo](https://youtu.be/6g7pIC9_4bo)
+📹 **Watch the demo**: [Currency Exchange Dashboard Demo]https://youtu.be/Kf13VgzYO6g
 
 See the application in action including:
 - Live currency conversion
