@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  # Simulate Web-01 server
+  web-01:
+    image: sethira/currency-exchange:v1
+    container_name: web-01
+    ports:
+      - "8081:8080"
+    networks:
+      lab-network:
+        ipv4_address: 172.20.0.11
+    restart: unless-stopped
+
+  # Simulate Web-02 server  
+  web-02:
+    image: sethira/currency-exchange:v1
+    container_name: web-02
+    ports:
+      - "8082:8080"
+    networks:
+      lab-network:
+        ipv4_address: 172.20.0.12
+    restart: unless-stopped
+
+  # Simulate Load Balancer (lb-01)
+  lb-01:
+    image: haproxy:alpine
+    container_name: lb-01
+    ports:
+      - "80:80"
+      - "8404:8404"  # HAProxy stats
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+    networks:
+      lab-network:
+        ipv4_address: 172.20.0.10
+    depends_on:
+      - web-01
+      - web-02
+    restart: unless-stopped
+
+networks:
+  lab-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
