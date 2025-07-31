@@ -370,3 +370,16 @@ telnet web-02 8080
 - **FlagsAPI**: https://flagsapi.com/ - for country flag icons
 - **Nginx**: https://nginx.org/ - web server
 - **Docker**: https://docker.com/ - containerization platform
+
+
+## Demo Video
+
+📹 **Watch the demo**: [Currency Exchange Dashboard Demo](https://youtu.be/6g7pIC9_4bo)
+
+See the application in action including:
+- Live currency conversion
+- Search functionality
+- Conversion history
+- Responsive design
+- Load balancing demonstration
+
